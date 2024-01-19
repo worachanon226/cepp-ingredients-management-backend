@@ -1,15 +1,17 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import * as mongoose from 'mongoose';
+import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
+import { User } from '../user/schema/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from '../user/user';
-import { RegisterUserDto } from './dto/auth-login.dto';
+import { RegisterUserDto } from './dto/auth-register.dto';
 import { authConfig } from 'config/auth.config';
+import { LoginUserDto } from './dto/auth-login.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(User.name) private readonly userModel: mongoose.Model<User>,
+    @InjectModel(User.name)
+    private readonly userModel: Model<User>,
   ) {}
 
   async registerUser(registerUserDto: RegisterUserDto) {
@@ -42,4 +44,25 @@ export class AuthService {
       );
     }
   }
+
+  async LoginUser(loginUserDto: LoginUserDto) {
+    const user = await this.userModel.findOne({
+      username: loginUserDto.username,
+    });
+
+    if (!user) {
+      throw new HttpException(
+        {
+          message: 'User or Password incorrect.',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const isMatch = await bcrypt.compare(loginUserDto.password, user.password);
+    if (isMatch) {
+    }
+  }
+
+  private generateAccessToken(userId: string) {}
 }
