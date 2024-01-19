@@ -6,12 +6,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { RegisterUserDto } from './dto/auth-register.dto';
 import { authConfig } from 'config/auth.config';
 import { LoginUserDto } from './dto/auth-login.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(User.name)
     private readonly userModel: Model<User>,
+    private jwtService: JwtService,
   ) {}
 
   async registerUser(registerUserDto: RegisterUserDto) {
@@ -27,6 +29,12 @@ export class AuthService {
         (registerUserDto.password as string) = hash;
         const registedUser = new this.userModel(registerUserDto);
         await registedUser.save();
+
+        return await this.generateAccessToken(
+          registedUser.id,
+          registedUser.username,
+          registedUser.role,
+        );
       } else {
         throw new HttpException(
           {
@@ -53,16 +61,39 @@ export class AuthService {
     if (!user) {
       throw new HttpException(
         {
-          message: 'User or Password incorrect.',
+          message: 'user or password incorrect.',
         },
-        HttpStatus.BAD_REQUEST,
+        HttpStatus.UNAUTHORIZED,
       );
     }
 
     const isMatch = await bcrypt.compare(loginUserDto.password, user.password);
     if (isMatch) {
+      return {
+        accessToken: await this.generateAccessToken(
+          user.id,
+          user.username,
+          user.role,
+        ),
+      };
+    } else {
+      throw new HttpException(
+        {
+          message: 'user or password incorrect.',
+        },
+        HttpStatus.UNAUTHORIZED,
+      );
     }
   }
 
-  private generateAccessToken(userId: string) {}
+  private async generateAccessToken(
+    userId: string,
+    username: string,
+    role: string,
+  ) {
+    const payload = { id: userId, username: username, role: role };
+    return {
+      access_token: await this.jwtService.signAsync(payload),
+    };
+  }
 }
