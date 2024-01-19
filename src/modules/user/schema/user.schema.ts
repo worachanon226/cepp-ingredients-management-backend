@@ -1,4 +1,4 @@
-import { Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export enum UserRole {
   OWNER = 'owner',
@@ -6,7 +6,7 @@ export enum UserRole {
   STOCKCONTROLLER = 'stockcontroller',
   EMPLOYEE = 'employee',
 }
-
+@Schema()
 export class User {
   @Prop()
   username: string;
