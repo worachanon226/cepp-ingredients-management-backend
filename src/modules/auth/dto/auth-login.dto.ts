@@ -1,8 +1,8 @@
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
-import { UserRole } from '../schema/user.schema';
+import { UserRole } from 'src/modules/user/schema/user.schema';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateUserDto {
+export class RegisterUserDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
