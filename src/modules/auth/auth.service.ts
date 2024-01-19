@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from '../user/user';
 import { RegisterUserDto } from './dto/auth-login.dto';
+import { authConfig } from 'config/auth.config';
 
 @Injectable()
 export class AuthService {
@@ -18,7 +19,7 @@ export class AuthService {
 
     try {
       if (!user) {
-        const saltOrRounds = 10;
+        const saltOrRounds = +authConfig().saltround;
         const hash = await bcrypt.hash(registerUserDto.password, saltOrRounds);
 
         (registerUserDto.password as string) = hash;
