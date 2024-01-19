@@ -1,13 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import { ConfigService } from '@nestjs/config';
+import { appConfig } from 'config/app.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const configService = app.get(ConfigService);
 
-  if (configService.get<string>('VERSION') == 'TEST') {
+  if (appConfig().version == 'TEST') {
     const config = new DocumentBuilder()
       .setTitle('Ingredients-management')
       .setDescription('Ingredients-management API')
@@ -17,6 +16,8 @@ async function bootstrap() {
     SwaggerModule.setup('api', app, document);
   }
 
-  await app.listen(3000);
+  app.enableCors();
+
+  await app.listen(appConfig().port || 3000);
 }
 bootstrap();
