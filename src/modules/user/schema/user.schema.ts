@@ -21,7 +21,7 @@ export class User {
     enum: UserRole,
     default: 'employee',
   })
-  role: string;
+  role: UserRole;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
