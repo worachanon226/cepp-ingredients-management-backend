@@ -7,6 +7,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { databaseConfig } from 'config/database.config';
 import { AuthModule } from './modules/auth/auth.module';
 import { MenuModule } from './modules/menu/menu.module';
+import { RestaurantService } from './modules/restaurant/restaurant.service';
+import { RestaurantModule } from './modules/restaurant/restaurant.module';
 
 @Module({
   imports: [
@@ -18,6 +20,7 @@ import { MenuModule } from './modules/menu/menu.module';
     UserModule,
     AuthModule,
     MenuModule,
+    RestaurantModule,
   ],
   controllers: [AppController],
   providers: [AppService],
