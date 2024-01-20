@@ -13,8 +13,8 @@ import { jwtConfig } from 'config/jwt.config';
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     JwtModule.register({
       global: true,
-      secret: jwtConfig.secret,
-      signOptions: { expiresIn: '1d' },
+      secret: jwtConfig().secret,
+      signOptions: { expiresIn: jwtConfig().expirationTime },
     }),
     UserModule,
   ],
