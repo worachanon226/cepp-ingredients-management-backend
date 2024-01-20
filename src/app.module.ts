@@ -11,7 +11,7 @@ import { AuthModule } from './modules/auth/auth.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `config/.env`,
+      envFilePath: `config/configuration`,
     }),
     MongooseModule.forRoot(databaseConfig().url),
     UserModule,
