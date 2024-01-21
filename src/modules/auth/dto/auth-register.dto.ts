@@ -1,5 +1,5 @@
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
-import { UserRole } from 'src/modules/user/schema/user.schema';
+import { AllRole, UserRole } from 'src/modules/user/schema/user.schema';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class RegisterUserDto {
@@ -18,7 +18,10 @@ export class RegisterUserDto {
   @ApiProperty()
   readonly name: string;
 
-  @IsEnum(UserRole)
+  @IsEnum(AllRole)
   @ApiProperty()
-  readonly role: UserRole;
+  readonly role: AllRole;
+
+  @ApiProperty()
+  readonly ownerSecret?: string;
 }

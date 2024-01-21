@@ -13,7 +13,7 @@ export class RestaurantService {
 
   async create(creatRestaurantDto: CreateRestaurantDto) {
     const createdRestaurant = new this.restaurantModel(creatRestaurantDto);
-    await createdRestaurant.save();
+    return await createdRestaurant.save();
   }
 
   async findOneById(restaurantId: string) {

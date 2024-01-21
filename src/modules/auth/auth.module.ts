@@ -7,6 +7,8 @@ import { User } from '../user/schema/user.schema';
 import { UserSchema } from '../user/schema/user.schema';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConfig } from 'config/jwt.config';
+import { RestaurantModule } from '../restaurant/restaurant.module';
+import { MemberModule } from '../member/member.module';
 
 @Module({
   imports: [
@@ -17,6 +19,7 @@ import { jwtConfig } from 'config/jwt.config';
       signOptions: { expiresIn: '1d' },
     }),
     UserModule,
+    RestaurantModule,
   ],
   controllers: [AuthController],
   providers: [AuthService],
