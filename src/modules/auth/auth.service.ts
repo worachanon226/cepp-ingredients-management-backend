@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { AllRole, User } from '../user/schema/user.schema';
+import { User } from '../user/schema/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { RegisterUserDto } from './dto/auth-register.dto';
 import { authConfig } from 'config/auth.config';
@@ -17,17 +17,6 @@ export class AuthService {
   ) {}
 
   async registerUser(registerUserDto: RegisterUserDto) {
-    if (
-      registerUserDto.ownerSecret != authConfig().ownerSecret &&
-      registerUserDto.role == AllRole.OWNER
-    ) {
-      throw new HttpException(
-        {
-          message: 'can not access owner role',
-        },
-        HttpStatus.BAD_REQUEST,
-      );
-    }
     const user = await this.userModel.findOne({
       username: registerUserDto.username,
     });
@@ -41,9 +30,6 @@ export class AuthService {
         const registedUser = new this.userModel(registerUserDto);
         await registedUser.save();
 
-        if (registerUserDto.ownerSecret == authConfig().ownerSecret) {
-          registedUser.role = AllRole.OWNER;
-        }
         return await this.generateAccessToken(
           registedUser.id,
           registedUser.username,

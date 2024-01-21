@@ -12,37 +12,21 @@ import { RestaurantService } from './restaurant.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/guard/auth.guard';
 import { CreateRestaurantDto, UpdateRestaurantDto } from './dto/restaurant.dto';
-import { Roles } from '../auth/decorator/role.decorator';
-import { AllRole } from '../user/schema/user.schema';
-import { RolesGuard } from '../auth/guard/role.guard';
-import { MemberService } from '../member/member.service';
-import { CurrentUser } from '../auth/decorator/currentuser.decorator';
-import { IUser } from '../user/interface/user.interface';
 
 @ApiBearerAuth()
 @UseGuards(AuthGuard)
 @ApiTags('restaurant')
 @Controller('restaurant')
 export class RestaurantController {
-  constructor(
-    private readonly restaurantService: RestaurantService,
-    private readonly memberService: MemberService,
-  ) {}
+  constructor(private readonly restaurantService: RestaurantService) {}
   @Get(':id')
   async findOneById(@Param('id') id: string) {
     return await this.restaurantService.findOneById(id);
   }
 
   @Post()
-  @Roles(AllRole.OWNER)
-  @UseGuards(AuthGuard, RolesGuard)
-  async create(
-    @CurrentUser() iuser: IUser,
-    @Body() createrestaurantdto: CreateRestaurantDto,
-  ) {
-    const restaurant = await this.restaurantService.create(createrestaurantdto);
-    await this.memberService.create(iuser.sub, restaurant.id);
-    return restaurant;
+  async create(@Body() createrestaurantdto: CreateRestaurantDto) {
+    return await this.restaurantService.create(createrestaurantdto);
   }
 
   @Patch(':id')
