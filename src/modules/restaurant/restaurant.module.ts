@@ -14,5 +14,6 @@ import { MemberModule } from '../member/member.module';
   ],
   controllers: [RestaurantController],
   providers: [RestaurantService],
+  exports: [RestaurantService],
 })
 export class RestaurantModule {}
