@@ -22,3 +22,25 @@ export class RegisterUserDto {
   @ApiProperty()
   readonly role: UserRole;
 }
+
+export class RegisterOwnerDto {
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  readonly username: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  readonly password: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  readonly name: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  readonly ownerSecret: string;
+}

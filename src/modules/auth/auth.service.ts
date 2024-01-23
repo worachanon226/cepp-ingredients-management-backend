@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { User } from '../user/schema/user.schema';
+import { AllRole, User } from '../user/schema/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
-import { RegisterUserDto } from './dto/auth-register.dto';
+import { RegisterOwnerDto, RegisterUserDto } from './dto/auth-register.dto';
 import { authConfig } from 'config/auth.config';
 import { LoginUserDto } from './dto/auth-login.dto';
 import { JwtService } from '@nestjs/jwt';
@@ -16,18 +16,45 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
+  async registerOwner(registerOwnerDto: RegisterOwnerDto) {
+    if (registerOwnerDto.ownerSecret != authConfig().ownerSecret) {
+      throw new HttpException(
+        {
+          message: 'can not access owner role.',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    } else {
+      return await this.register({
+        username: registerOwnerDto.username,
+        password: registerOwnerDto.password,
+        name: registerOwnerDto.name,
+        role: AllRole.OWNER,
+      });
+    }
+  }
+
   async registerUser(registerUserDto: RegisterUserDto) {
+    return await this.register(registerUserDto);
+  }
+
+  private async register({ username, password, name, role }) {
     const user = await this.userModel.findOne({
-      username: registerUserDto.username,
+      username: username,
     });
 
     try {
       if (!user) {
         const saltOrRounds = +authConfig().saltround;
-        const hash = await bcrypt.hash(registerUserDto.password, saltOrRounds);
+        const hash = await bcrypt.hash(password, saltOrRounds);
 
-        (registerUserDto.password as string) = hash;
-        const registedUser = new this.userModel(registerUserDto);
+        (password as string) = hash;
+        const registedUser = new this.userModel({
+          username: username,
+          password: password,
+          name: name,
+          role: role,
+        });
         await registedUser.save();
 
         return await this.generateAccessToken(
