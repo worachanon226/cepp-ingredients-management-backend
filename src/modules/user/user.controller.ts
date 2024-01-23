@@ -4,7 +4,7 @@ import { UserService } from './user.service';
 import { AuthGuard } from '../auth/guard/auth.guard';
 import { RolesGuard } from '../auth/guard/role.guard';
 import { Roles } from '../auth/decorator/role.decorator';
-import { UserRole } from './schema/user.schema';
+import { AllRole } from './schema/user.schema';
 import { appConfig } from 'config/app.config';
 
 @ApiTags('user')
@@ -14,7 +14,7 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @Get()
-  @Roles(UserRole.OWNER)
+  @Roles(AllRole.OWNER)
   @UseGuards(AuthGuard, RolesGuard)
   async getAll() {
     if (appConfig().version == 'TEST') {
