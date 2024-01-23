@@ -12,24 +12,30 @@ import { RestaurantService } from './restaurant.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/guard/auth.guard';
 import { CreateRestaurantDto, UpdateRestaurantDto } from './dto/restaurant.dto';
+import { RolesGuard } from '../auth/guard/role.guard';
+import { Roles } from '../auth/decorator/role.decorator';
+import { AllRole } from '../user/schema/user.schema';
 
 @ApiBearerAuth()
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard, RolesGuard)
 @ApiTags('restaurant')
 @Controller('restaurant')
 export class RestaurantController {
   constructor(private readonly restaurantService: RestaurantService) {}
+
   @Get(':id')
   async findOneById(@Param('id') id: string) {
     return await this.restaurantService.findOneById(id);
   }
 
   @Post()
+  @Roles(AllRole.OWNER)
   async create(@Body() createrestaurantdto: CreateRestaurantDto) {
     return await this.restaurantService.create(createrestaurantdto);
   }
 
   @Patch(':id')
+  @Roles(AllRole.OWNER)
   async update(
     @Param('id') id: string,
     @Body() updaterestaurantdto: UpdateRestaurantDto,
@@ -38,6 +44,7 @@ export class RestaurantController {
   }
 
   @Delete(':id')
+  @Roles(AllRole.OWNER)
   async delete(@Param('id') id: string) {
     return await this.restaurantService.delete(id);
   }
