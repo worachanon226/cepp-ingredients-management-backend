@@ -15,6 +15,8 @@ import { CreateRestaurantDto, UpdateRestaurantDto } from './dto/restaurant.dto';
 import { RolesGuard } from '../auth/guard/role.guard';
 import { Roles } from '../auth/decorator/role.decorator';
 import { AllRole } from '../user/schema/user.schema';
+import { CurrentUser } from '../auth/decorator/currentuser.decorator';
+import { IUser } from '../user/interface/user.interface';
 
 @ApiBearerAuth()
 @UseGuards(AuthGuard, RolesGuard)
@@ -30,8 +32,11 @@ export class RestaurantController {
 
   @Post()
   @Roles(AllRole.OWNER)
-  async create(@Body() createrestaurantdto: CreateRestaurantDto) {
-    return await this.restaurantService.create(createrestaurantdto);
+  async create(
+    @CurrentUser() iuser: IUser,
+    @Body() createrestaurantdto: CreateRestaurantDto,
+  ) {
+    return await this.restaurantService.create(iuser.sub, createrestaurantdto);
   }
 
   @Patch(':id')
