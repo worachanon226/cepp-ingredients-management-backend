@@ -7,12 +7,16 @@ import { RegisterOwnerDto, RegisterUserDto } from './dto/auth-register.dto';
 import { authConfig } from 'config/auth.config';
 import { LoginUserDto } from './dto/auth-login.dto';
 import { JwtService } from '@nestjs/jwt';
+import { UserService } from '../user/user.service';
+import { MemberService } from '../member/member.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(User.name)
     private readonly userModel: Model<User>,
+    private readonly userService: UserService,
+    private readonly memberService: MemberService,
     private jwtService: JwtService,
   ) {}
 
@@ -34,8 +38,22 @@ export class AuthService {
     }
   }
 
-  async registerUser(registerUserDto: RegisterUserDto) {
-    return await this.register(registerUserDto);
+  async registerUser(restaurantId: string, registerUserDto: RegisterUserDto) {
+    await this.register(registerUserDto);
+    console.log(registerUserDto);
+    const user = await this.userService.getUserByUsername(
+      registerUserDto.username,
+    );
+    if (!user) {
+      throw new HttpException(
+        {
+          message: 'username not  found',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const members = await this.memberService.create(user, restaurantId);
   }
 
   private async register({ username, password, name, role }) {
