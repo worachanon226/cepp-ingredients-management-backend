@@ -17,11 +17,6 @@ export class MemberController {
     return await this.memberService.getRestaurantsByUserId(iuser.sub);
   }
 
-  @Get('restaurant/:restaurantId')
-  async findByRestaurantId(@Param('restaurantId') restaurantId: string) {
-    return await this.memberService.findByRestaurantId(restaurantId);
-  }
-
   @Get('user/:restaurantId')
   async getUsersByRestaurantId(@Param('restaurantId') restaurantId: string) {
     return await this.memberService.getUsersByRestaurantId(restaurantId);
