@@ -14,6 +14,16 @@ export class UserService {
     return await this.userModel.find();
   }
 
+  async getByIdReturnValidData(id: string) {
+    const user = await this.userModel.findById(id);
+    return {
+      userId: user.id,
+      username: user.username,
+      name: user.name,
+      role: user.role,
+    };
+  }
+
   async getUserByUsername(username: string) {
     const user = await this.userModel.findOne({ username: username });
     return user.id;
