@@ -23,13 +23,11 @@ export class MemberService {
   async getUsersByRestaurantId(restaurantId: string) {
     const members = await this.findByRestaurantId(restaurantId);
     const userPromises = members.map(async (member) => {
-      console.log(member);
       var user = await this.userService.getByIdReturnValidData(member.userId);
-      console.log(user);
       return user;
     });
     const users = await Promise.all(userPromises);
-    return users
+    return users;
   }
 
   async findByRestaurantId(restaurantId: string) {
