@@ -15,7 +15,7 @@ export class MemberService {
       userId: userId,
       restaurantId: restaurantId,
     });
-    await createdMember.save();
+    return await createdMember.save();
   }
 
   async findByRestaurantId(restaurantId: string) {

@@ -40,7 +40,7 @@ export class AuthService {
 
   async registerUser(restaurantId: string, registerUserDto: RegisterUserDto) {
     await this.register(registerUserDto);
-    console.log(registerUserDto);
+
     const user = await this.userService.getUserByUsername(
       registerUserDto.username,
     );
@@ -53,7 +53,7 @@ export class AuthService {
       );
     }
 
-    const members = await this.memberService.create(user, restaurantId);
+    return await this.memberService.create(user, restaurantId);
   }
 
   private async register({ username, password, name, role }) {
