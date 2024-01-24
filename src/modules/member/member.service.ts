@@ -1,14 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import mongoose from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Member } from './schema/member.schema';
 import { UserService } from '../user/user.service';
+import { RestaurantService } from '../restaurant/restaurant.service';
 
 @Injectable()
 export class MemberService {
   constructor(
     @InjectModel(Member.name)
     private readonly memberModel: mongoose.Model<Member>,
+
+    @Inject(forwardRef(() => RestaurantService))
+    private readonly restaurantService: RestaurantService,
+
     private readonly userService: UserService,
   ) {}
 
@@ -28,6 +33,18 @@ export class MemberService {
     });
     const users = await Promise.all(userPromises);
     return users;
+  }
+
+  async getRestaurantsByUserId(userId: string) {
+    const members = await this.findByUserId(userId);
+    const restaurantPromise = members.map(async (member) => {
+      var restaurant = await this.restaurantService.findOneById(
+        member.restaurantId,
+      );
+      return restaurant;
+    });
+    const restaurants = await Promise.all(restaurantPromise);
+    return restaurants;
   }
 
   async findByRestaurantId(restaurantId: string) {

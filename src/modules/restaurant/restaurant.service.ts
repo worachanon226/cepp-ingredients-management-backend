@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import mongoose from 'mongoose';
 import { Restaurant } from './schema/restaurant.schema';
 import { InjectModel } from '@nestjs/mongoose';
@@ -10,6 +10,8 @@ export class RestaurantService {
   constructor(
     @InjectModel(Restaurant.name)
     private readonly restaurantModel: mongoose.Model<Restaurant>,
+
+    @Inject(forwardRef(() => MemberService))
     private readonly memberService: MemberService,
   ) {}
 
