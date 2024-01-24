@@ -7,6 +7,7 @@ import { User } from '../user/schema/user.schema';
 import { UserSchema } from '../user/schema/user.schema';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConfig } from 'config/jwt.config';
+import { MemberModule } from '../member/member.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { jwtConfig } from 'config/jwt.config';
       signOptions: { expiresIn: '1d' },
     }),
     UserModule,
+    MemberModule,
   ],
   controllers: [AuthController],
   providers: [AuthService],
