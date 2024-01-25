@@ -10,6 +10,7 @@ import { MenuModule } from './modules/menu/menu.module';
 import { RestaurantModule } from './modules/restaurant/restaurant.module';
 import { MemberModule } from './modules/member/member.module';
 import { IngredientModule } from './modules/ingredient/ingredient.module';
+import { ComponentModule } from './modules/component/component.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { IngredientModule } from './modules/ingredient/ingredient.module';
     RestaurantModule,
     MemberModule,
     IngredientModule,
+    ComponentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
