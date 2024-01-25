@@ -2,6 +2,8 @@ import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { MemberService } from './member.service';
 import { AuthGuard } from '../auth/guard/auth.guard';
+import { CurrentUser } from '../auth/decorator/currentuser.decorator';
+import { IUser } from '../user/interface/user.interface';
 
 @ApiTags('member')
 @Controller('member')
@@ -10,9 +12,9 @@ import { AuthGuard } from '../auth/guard/auth.guard';
 export class MemberController {
   constructor(private memberService: MemberService) {}
 
-  @Get('restaurant/:restaurantId')
-  async findByRestaurantId(@Param('restaurantId') restaurantId: string) {
-    return await this.memberService.findByRestaurantId(restaurantId);
+  @Get('restaurant')
+  async getRestaurantsByUserId(@CurrentUser() iuser: IUser) {
+    return await this.memberService.getRestaurantsByUserId(iuser.sub);
   }
 
   @Get('user/:restaurantId')

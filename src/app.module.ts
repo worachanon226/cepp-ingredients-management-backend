@@ -9,6 +9,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { MenuModule } from './modules/menu/menu.module';
 import { RestaurantModule } from './modules/restaurant/restaurant.module';
 import { MemberModule } from './modules/member/member.module';
+import { IngredientModule } from './modules/ingredient/ingredient.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { MemberModule } from './modules/member/member.module';
     MenuModule,
     RestaurantModule,
     MemberModule,
+    IngredientModule,
   ],
   controllers: [AppController],
   providers: [AppService],

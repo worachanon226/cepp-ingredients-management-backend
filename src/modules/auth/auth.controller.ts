@@ -12,13 +12,13 @@ import { IUser } from '../user/interface/user.interface';
 
 @ApiTags('auth')
 @Controller('auth')
-@ApiBearerAuth()
 export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('register/:restaurantId')
   @Roles(AllRole.OWNER)
   @UseGuards(AuthGuard, RolesGuard)
+  @ApiBearerAuth()
   async registerUser(
     @Param('restaurantId') restaurantId: string,
     @Body() registerUserDto: RegisterUserDto,
