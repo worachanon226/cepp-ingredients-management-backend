@@ -11,7 +11,7 @@ export class CreateComponentDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
-  readonly mennuId: string;
+  readonly menuId: string;
 
   @IsString()
   @IsNotEmpty()
@@ -37,7 +37,7 @@ export class UpdateComponentDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
-  readonly mennuId: string;
+  readonly menuId: string;
 
   @IsString()
   @IsNotEmpty()

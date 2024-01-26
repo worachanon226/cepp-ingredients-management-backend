@@ -12,5 +12,6 @@ import { Component, ComponentSchema } from './schema/component.schema';
   ],
   providers: [ComponentService],
   controllers: [ComponentController],
+  exports: [ComponentService],
 })
 export class ComponentModule {}

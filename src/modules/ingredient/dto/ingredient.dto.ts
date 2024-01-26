@@ -10,7 +10,7 @@ export class CreateIngredientDto {
   @IsNumber()
   @IsNotEmpty()
   @ApiProperty()
-  readonly amount: string;
+  readonly amount: number;
 
   @IsString()
   @IsNotEmpty()
@@ -27,5 +27,5 @@ export class UpdateIngredientDto {
   @IsNumber()
   @IsNotEmpty()
   @ApiProperty()
-  readonly amount: string;
+  readonly amount: number;
 }

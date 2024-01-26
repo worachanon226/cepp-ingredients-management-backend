@@ -26,4 +26,8 @@ export class ComponentService {
       },
     );
   }
+
+  async findByMenuId(menuId: string) {
+    return await this.componentModel.find({ menuId: menuId });
+  }
 }

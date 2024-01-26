@@ -13,6 +13,9 @@ export class Log {
 
   @Prop()
   ingredientAmount: number;
+
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export const LogSchema = SchemaFactory.createForClass(Log);

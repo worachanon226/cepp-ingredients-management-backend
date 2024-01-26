@@ -11,6 +11,10 @@ export class IngredientService {
     private readonly ingredientModel: mongoose.Model<Ingredient>,
   ) {}
 
+  async getById(ingredientId: string) {
+    return await this.ingredientModel.findById(ingredientId);
+  }
+
   async create(createIngredientDto: CreateIngredientDto) {
     const createdIngredient = new this.ingredientModel(createIngredientDto);
     await createdIngredient.save();
@@ -25,5 +29,10 @@ export class IngredientService {
         new: true,
       },
     );
+  }
+
+  async checkCanMake(ingredientId: string, amount: number) {
+    const ingredient = await this.ingredientModel.findById(ingredientId);
+    return ingredient.amount >= amount;
   }
 }

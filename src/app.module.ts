@@ -12,6 +12,7 @@ import { MemberModule } from './modules/member/member.module';
 import { IngredientModule } from './modules/ingredient/ingredient.module';
 import { ComponentModule } from './modules/component/component.module';
 import { LogModule } from './modules/log/log.module';
+import { OrderModule } from './modules/order/order.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { LogModule } from './modules/log/log.module';
     IngredientModule,
     ComponentModule,
     LogModule,
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [AppService],

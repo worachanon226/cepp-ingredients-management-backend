@@ -22,7 +22,8 @@ export class MemberService {
       userId: userId,
       restaurantId: restaurantId,
     });
-    return await createdMember.save();
+    await createdMember.save();
+    return createdMember;
   }
 
   async getUsersByRestaurantId(restaurantId: string) {
