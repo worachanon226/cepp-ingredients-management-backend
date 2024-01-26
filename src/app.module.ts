@@ -11,6 +11,7 @@ import { RestaurantModule } from './modules/restaurant/restaurant.module';
 import { MemberModule } from './modules/member/member.module';
 import { IngredientModule } from './modules/ingredient/ingredient.module';
 import { ComponentModule } from './modules/component/component.module';
+import { LogModule } from './modules/log/log.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { ComponentModule } from './modules/component/component.module';
     MemberModule,
     IngredientModule,
     ComponentModule,
+    LogModule,
   ],
   controllers: [AppController],
   providers: [AppService],
