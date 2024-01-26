@@ -11,6 +11,10 @@ export class LogService {
     private readonly logModel: Model<Log>,
   ) {}
 
+  async findByRestaurantId(restaurantId: string) {
+    return await this.logModel.find({ restaurantId: restaurantId });
+  }
+
   async create(createLogDto: CreateLogDto) {
     const createdLog = new this.logModel(createLogDto);
     await createdLog.save();
