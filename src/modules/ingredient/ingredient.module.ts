@@ -12,5 +12,6 @@ import { Ingredient, IngredientSchema } from './schema/ingredient.schema';
   ],
   providers: [IngredientService],
   controllers: [IngredientController],
+  exports: [IngredientService],
 })
 export class IngredientModule {}
