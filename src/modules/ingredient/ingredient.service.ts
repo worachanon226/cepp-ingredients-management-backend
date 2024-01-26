@@ -26,4 +26,9 @@ export class IngredientService {
       },
     );
   }
+
+  async checkCanMake(ingredientId: string, amount: number) {
+    const ingredient = await this.ingredientModel.findById(ingredientId);
+    return ingredient.amount >= amount;
+  }
 }
