@@ -32,7 +32,8 @@ export class AuthService {
       return await this.register({
         username: registerOwnerDto.username,
         password: registerOwnerDto.password,
-        name: registerOwnerDto.name,
+        firstname: registerOwnerDto.firstname,
+        lastname: registerOwnerDto.lastname,
         role: AllRole.OWNER,
       });
     }
@@ -56,7 +57,7 @@ export class AuthService {
     return await this.memberService.create(user, restaurantId);
   }
 
-  private async register({ username, password, name, role }) {
+  private async register({ username, password, firstname, lastname, role }) {
     const user = await this.userModel.findOne({
       username: username,
     });
@@ -70,7 +71,8 @@ export class AuthService {
         const registedUser = new this.userModel({
           username: username,
           password: password,
-          name: name,
+          firstname: firstname,
+          lastname: lastname,
           role: role,
         });
         await registedUser.save();
